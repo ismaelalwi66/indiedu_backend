@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,7 +31,8 @@ class AuthController extends Controller
                 return response()->json([
                     'status' => 'Success',
                     'massage' => 'Login Successful',
-                    'token' => $token->plainTextToken
+                    'token' => $token->plainTextToken,
+                    'data' => $user
                 ]);
             } else {
                 return response()->json([
