@@ -6,41 +6,61 @@ use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class VerificationController extends Controller
 {
-    public function verify(EmailVerificationRequest $request)
+    public function verify(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        if (!$request->hasValidSignature()) {
             return response()->json([
                 'status' => 'Error',
-                'message' => 'Email already verified'
-            ]);
-        } elseif ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
-
-            return response()->json([
-                'status' => 'Success',
-                'message' => 'Email has been verified'
+                'message' => 'Link Expired or Not Valid'
             ]);
         } else {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'verification link not valid or expired'
-            ]);
+
+            $userId = $request->route('id');
+            $user = User::findOrFail($userId);
+
+            if ($user->hasVerifiedEmail()) {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'Email already verified'
+                ]);
+            } elseif ($user->markEmailAsVerified()) {
+                event(new Verified($request->user()));
+
+                return response()->json([
+                    'status' => 'Success',
+                    'message' => 'Email has been verified'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'Error',
+                    'message' => 'Link Expired or Not Valid'
+                ]);
+            }
         }
     }
 
     public function sendVerificationEmail(Request $request)
     {
-
-        if ($request->user()->hasVerifiedEmail()) {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
             return response()->json([
+                'status' => 'Error',
+                'message' => 'Unknown Request'
+            ]);
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return response()->json([
+                'status' => 'Error',
                 'message' => 'Already Verified'
             ]);
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
         return response()->json([
             'status' => 'Success',
