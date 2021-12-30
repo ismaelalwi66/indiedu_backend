@@ -21,22 +21,23 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // });
 
-Route::view('/', '/')->name('login');
-
-Route::post('register', [UserController::class, 'store']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
-Route::post('email/verification-notification', [VerificationController::class, 'sendVerificationEmail']);
 // Route::post('forgot-password', [NewPasswordController::class, 'forgotPassword']);
 // Route::post('reset-password', [NewPasswordController::class, 'reset']);
 // Route::get('reset-password', [NewPasswordController::class, 'getTokenReset'])->name('password.reset');
 
-// Reset PW
-Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
-Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
-Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
+Route::middleware('guest')->group(function () {
+    //Register&Login
+    Route::post('register', [UserController::class, 'store']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('auth/{provider}', [SociaLiteController::class, 'redirectToProvider']);
+    Route::get('auth/{provider}/callback', [SociaLiteController::class, 'handleProvideCallback']);
+    //Verif
+    Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+    Route::post('email/send-email-verification', [VerificationController::class, 'sendVerificationEmail']);
+    // Reset PW
+    Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
+    Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
+    Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
+});
 
-
-Route::get('auth/{provider}', [SociaLiteController::class, 'redirectToProvider']);
-Route::get('auth/{provider}/callback', [SociaLiteController::class, 'handleProvideCallback']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
