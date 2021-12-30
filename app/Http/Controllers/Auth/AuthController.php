@@ -36,8 +36,8 @@ class AuthController extends Controller
                 ]);
             } else {
                 return response()->json([
-                    'status' => 'Error',
-                    'message' => 'Login Failed'
+                    'Status' => 'Error',
+                    'Message' => 'Login Failed'
                 ]);
             }
         }

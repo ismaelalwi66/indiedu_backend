@@ -27,7 +27,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             $response = [
-                'status' => 'error',
+                'status' => 'Error',
                 'massage' => 'Register Error',
                 'errors' => $validator->errors()
             ];
@@ -47,9 +47,14 @@ class UserController extends Controller
                 $token = $user->createToken('authtoken');
 
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'Success',
                     'massage' => 'Register Successful and Verification Link Sent',
                     'token' => $token->plainTextToken
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'Error',
+                    'massage' => 'Email already registered',
                 ]);
             }
         }
