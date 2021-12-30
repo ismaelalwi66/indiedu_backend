@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\SociaLiteController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
 });
 
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// Route::middleware('auth:sanctum')->group(function () {
+Route::post('logout', [AuthController::class, 'logout']);
+Route::apiResource('subject', SubjectController::class);
+// });
