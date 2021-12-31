@@ -5,8 +5,11 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\SociaLiteController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,7 +44,15 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
 });
 
+
 // Route::middleware('auth:sanctum')->group(function () {
-Route::post('logout', [AuthController::class, 'logout']);
-Route::apiResource('subject', SubjectController::class);
-// });
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::apiResource('subject', SubjectController::class);
+    // });
+
+// Grade
+Route::get('grade', [GradeController::class, 'index']);
+Route::post('grade', [GradeController::class, 'store']);
+Route::get('grade/{id}', [GradeController::class, 'show']);
+Route::put('grade/{id}', [GradeController::class, 'update']);
+Route::delete('grade/{id}', [GradeController::class, 'destroy']);
