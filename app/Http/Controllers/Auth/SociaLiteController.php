@@ -55,12 +55,12 @@ class SociaLiteController extends Controller
         $token = $authUser->createToken('userToken')->plainTextToken;
 
         return response()->json([
-            'status' => 'success',
+            'status' => 'Success',
             'message' => 'Login Successfuly',
             'email' => $authUser->email,
             'token' => $token
 
-        ]);
+        ], 201);
     }
 
     /**
