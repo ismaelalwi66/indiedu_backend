@@ -64,9 +64,9 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $subject)
     {
-        //
+        Subject::where('name', $subject)->update(['name' => $request->name]);
     }
 
     /**
@@ -75,8 +75,8 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($subject)
     {
-        //
+        Subject::where('name', $subject)->delete();
     }
 }
