@@ -49,8 +49,7 @@ class SubjectController extends Controller
      */
     public function show($subject)
     {
-        // dd($subject);
-        // $data = Subject::all();
+        // $data = Subject::where('name', $subject)->first();
 
         // return response()->json([
         //     'data' => $data
@@ -64,9 +63,9 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $subject)
     {
-        //
+        $data = Subject::where('name', $subject)->update('name', $request->subject);
     }
 
     /**
@@ -75,8 +74,8 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($subject)
     {
-        //
+        $data = Subject::where('name', $subject)->delete();
     }
 }
