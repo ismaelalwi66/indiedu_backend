@@ -16,7 +16,7 @@ class CreateSectionsTable extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('desciption');
+            $table->string('description');
             $table->string('cover');
             $table->string('cover_url');
             $table->string('slug')->unique();
