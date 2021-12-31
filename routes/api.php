@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\SociaLiteController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 
@@ -45,14 +46,17 @@ Route::middleware('guest')->group(function () {
 });
 
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('subject', SubjectController::class);
-    // });
 
-// Grade
-Route::get('grade', [GradeController::class, 'index']);
-Route::post('grade', [GradeController::class, 'store']);
-Route::get('grade/{id}', [GradeController::class, 'show']);
-Route::put('grade/{id}', [GradeController::class, 'update']);
-Route::delete('grade/{id}', [GradeController::class, 'destroy']);
+    // Grade
+    Route::get('grade', [GradeController::class, 'index']);
+    Route::post('grade', [GradeController::class, 'store']);
+    Route::get('grade/{id}', [GradeController::class, 'show']);
+    Route::put('grade/{id}', [GradeController::class, 'update']);
+    Route::delete('grade/{id}', [GradeController::class, 'destroy']);
+
+    // Section
+    Route::apiResource('section', SectionController::class);
+});

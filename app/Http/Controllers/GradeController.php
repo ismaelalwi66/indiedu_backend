@@ -20,6 +20,7 @@ class GradeController extends Controller
             $data = Grade::all();
             return response()->json([
                 'message' => 'Berhasil ditampilkan',
+                'status' => '200',
                 'data' => $data,
             ]);
         } catch (\Throwable $th) {
