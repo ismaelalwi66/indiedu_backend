@@ -22,10 +22,10 @@ class CreateSectionsTable extends Migration
             $table->string('slug')->unique();
 
             $table->unsignedBigInteger('grade_id');
-            $table->unsignedBigInteger('section_id');
+            $table->unsignedBigInteger('subject_id');
 
-            $table->foreign('grade_id')->references('id')->on('grades');
-            $table->foreign('section_id')->references('id')->on('sections');
+            $table->foreign('grade_id')->references('id')->on('grades')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
         });
     }
