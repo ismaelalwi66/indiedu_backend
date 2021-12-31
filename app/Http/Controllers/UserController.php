@@ -31,7 +31,7 @@ class UserController extends Controller
                 'massage' => 'Register Error',
                 'errors' => $validator->errors()
             ];
-            return response()->json($response, 403);
+            return response()->json($response, 401);
         } else {
             $user = User::create([
                 'name' => $request->name,
@@ -50,12 +50,12 @@ class UserController extends Controller
                     'status' => 'Success',
                     'massage' => 'Register Successful and Verification Link Sent',
                     'token' => $token->plainTextToken
-                ]);
+                ], 201);
             } else {
                 return response()->json([
                     'status' => 'Error',
                     'massage' => 'Email already registered',
-                ]);
+                ], 400);
             }
         }
     }
