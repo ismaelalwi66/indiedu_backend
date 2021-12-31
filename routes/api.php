@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::get('auth/{provider}', [SociaLiteController::class, 'redirectToProvider']);
     Route::get('auth/{provider}/callback', [SociaLiteController::class, 'handleProvideCallback']);
-    //Verif 
+    //Verif
     Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::post('email/send-email-verification', [VerificationController::class, 'sendVerificationEmail']);
     // Reset PW
