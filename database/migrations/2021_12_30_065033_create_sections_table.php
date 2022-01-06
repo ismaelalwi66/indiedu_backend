@@ -21,9 +21,11 @@ class CreateSectionsTable extends Migration
             $table->string('cover_url');
             $table->string('slug')->unique();
 
+            $table->unsignedInteger('teacher_id');
             $table->unsignedBigInteger('grade_id');
             $table->unsignedBigInteger('subject_id');
 
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('grade_id')->references('id')->on('grades')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
