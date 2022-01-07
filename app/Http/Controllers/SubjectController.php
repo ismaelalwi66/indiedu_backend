@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class SubjectController extends Controller
         $data = Subject::all();
 
         return response()->json([
-            'message' => 'success',
+            'message' => 'Success',
             'status' => '200',
             'data' => $data
         ], 200);
@@ -32,7 +33,7 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         Subject::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         return response()->json([
@@ -50,10 +51,11 @@ class SubjectController extends Controller
     public function show($subject)
     {
         // $data = Subject::where('name', $subject)->first();
-
-        // return response()->json([
-        //     'data' => $data
-        // ]);
+        $subject = Subject::where('name', $subject)->first();
+        $data = Section::where('subject_id', $subject->id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
@@ -65,7 +67,12 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $subject)
     {
-        $data = Subject::where('name', $subject)->update('name', $request->subject);
+
+        $data = Subject::where('name', $subject)->update(['name'=> $request->name]);
+        return response()->json([
+            'message' => 'Success',
+            'status' => '200',
+        ]);
     }
 
     /**
@@ -77,5 +84,9 @@ class SubjectController extends Controller
     public function destroy($subject)
     {
         $data = Subject::where('name', $subject)->delete();
+        return response()->json([
+            'message' => 'Delete Success',
+            'status' => '200',
+        ]);
     }
 }

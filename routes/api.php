@@ -51,12 +51,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('subject', SubjectController::class);
 
     // Grade
-    Route::get('grade', [GradeController::class, 'index']);
-    Route::post('grade', [GradeController::class, 'store']);
-    Route::get('grade/{id}', [GradeController::class, 'show']);
-    Route::put('grade/{id}', [GradeController::class, 'update']);
-    Route::delete('grade/{id}', [GradeController::class, 'destroy']);
+    Route::apiResource('grade', GradeController::class);
 
     // Section
     Route::apiResource('section', SectionController::class);
+    Route::put('subsection/{id}', [SectionController::class, 'updateSubsection']);
 });
