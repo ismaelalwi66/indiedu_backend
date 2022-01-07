@@ -60,3 +60,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // Section
     Route::apiResource('section', SectionController::class);
 });
+
+Route::post('section/{slug}checkout', [TransactionController::class, 'store']);
