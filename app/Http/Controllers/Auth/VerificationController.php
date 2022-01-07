@@ -30,10 +30,11 @@ class VerificationController extends Controller
             } elseif ($user->markEmailAsVerified()) {
                 event(new Verified($request->user()));
 
-                return response()->json([
-                    'status' => 'Success',
-                    'message' => 'Email has been verified'
-                ]);
+                // return response()->json([
+                //     'status' => 'Success',
+                //     'message' => 'Email has been verified'
+                // ]);
+                return redirect('https://indiedu-vue-kelompok2.netlify.app/');
             } else {
                 return response()->json([
                     'status' => 'Error',
