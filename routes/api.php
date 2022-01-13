@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\SociaLiteController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Auth\SociaLiteController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 
 
 /*
@@ -51,9 +52,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('subject', SubjectController::class);
 
     // Grade
-    Route::apiResource('grade', GradeController::class);
+    Route::get('grade', [GradeController::class, 'index']);
+    Route::post('grade', [GradeController::class, 'store']);
+    Route::get('grade/{id}', [GradeController::class, 'show']);
+    Route::put('grade/{id}', [GradeController::class, 'update']);
+    Route::delete('grade/{id}', [GradeController::class, 'destroy']);
 
     // Section
     Route::apiResource('section', SectionController::class);
-    Route::put('subsection/{id}', [SectionController::class, 'updateSubsection']);
 });
+
+Route::post('section/{slug}checkout', [TransactionController::class, 'store']);

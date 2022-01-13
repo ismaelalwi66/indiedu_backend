@@ -37,7 +37,7 @@ class SectionController extends Controller
         try {
             Section::create([
                 'title' => $request->section_title,
-                'description'=> $request->section_description,
+                'description' => $request->section_description,
                 'cover' => $request->cover,
                 'cover_url' => $request->cover_url,
                 'slug' => Str::kebab($request->section_title),
@@ -61,8 +61,7 @@ class SectionController extends Controller
             return response()->json([
                 'message' => 'Create Success',
                 'status' => '200',
-            ],201);
-
+            ], 201);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Create Failed',
@@ -70,7 +69,6 @@ class SectionController extends Controller
                 'error' => $th,
             ], 400);
         }
-
     }
 
     /**
@@ -81,23 +79,22 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-    try {
-        $data = [
-            Section::find($id)->first(),
-            Subsection::find($id)->first(),
-        ];
-        return response()->json([
-            'message' => 'Berhasil ditampilkan',
-            'status' => '200',
-            'data' => $data,
-        ], 200);
-
-    } catch (\Throwable $th) {
-        return response()->json([
-            'message' => 'Gagal ditampilkan',
-            'status' => '400',
-        ],400);
-    }
+        try {
+            $data = [
+                Section::find($id)->first(),
+                Subsection::find($id)->first(),
+            ];
+            return response()->json([
+                'message' => 'Berhasil ditampilkan',
+                'status' => '200',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Gagal ditampilkan',
+                'status' => '400',
+            ], 400);
+        }
     }
 
     /**
@@ -112,7 +109,7 @@ class SectionController extends Controller
         try {
             $section = Section::find($id)->update([
                 'title' => $request->section_title,
-                'description'=> $request->section_description,
+                'description' => $request->section_description,
                 'cover' => $request->cover,
                 'cover_url' => $request->cover_url,
                 'slug' => Str::kebab($request->section_title),
@@ -125,19 +122,17 @@ class SectionController extends Controller
                 'message' => 'Update Section Success',
                 'status' => '200',
                 'data' => $section,
-            ],200);
-
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Update Section Failed',
                 'status' => '400',
                 'error' => $th,
-            ],400);
+            ], 400);
         }
-
     }
 
-    public function updateSubsection(Request $request,$id)
+    public function updateSubsection(Request $request, $id)
     {
         try {
             $subsection = Subsection::find($id)->update([
@@ -153,16 +148,14 @@ class SectionController extends Controller
                 'status' => '200',
                 'data' => $subsection,
 
-            ],200);
-
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Delete Success',
                 'status' => '400',
                 'error' => $th,
-            ],400);
+            ], 400);
         }
-
     }
     /**
      * Remove the specified resource from storage.
@@ -173,18 +166,17 @@ class SectionController extends Controller
     public function destroy($id)
     {
         try {
-            Section::where('id',$id)->first()->delete();
+            Section::where('id', $id)->first()->delete();
             return response()->json([
                 'message' => 'Section Deleted Success',
                 'status' => '200',
-            ],200);
-
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Section Delete Failed',
                 'status' => '400',
                 'error' => $th,
-            ],400);
+            ], 400);
         }
-        }
+    }
 }
