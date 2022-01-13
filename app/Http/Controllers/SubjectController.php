@@ -44,7 +44,7 @@ class SubjectController extends Controller
                 'slug' => Str::kebab($request->section_title),
                 'teacher_id' => Auth::id(),
                 'grade_id' => $request->grade_id,
-                'subject_id' => $request->subject_id,
+                'subject_category_id' => $request->subject_category_id,
             ]);
 
             // $section = Section::where('cover_url', $request->cover_url)->first();
@@ -116,7 +116,7 @@ class SubjectController extends Controller
                 'slug' => Str::kebab($request->section_title),
                 'teacher_id' => Auth::id(),
                 'grade_id' => $request->grade_id,
-                'subject_id' => $request->subject_id,
+                'subject_category_id' => $request->subject_category_id,
             ]);
 
             return response()->json([

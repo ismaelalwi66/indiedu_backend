@@ -60,5 +60,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Section
     Route::apiResource('section', SectionController::class);
+    Route::apiResource('subject', SubjectController::class);
+
+    //Subsection
+    Route::put('subsection/{id}', [SectionController::class, 'updateSubsection']);
 });
-Route::apiResource('subject', SubjectController::class);
