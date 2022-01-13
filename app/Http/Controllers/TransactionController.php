@@ -13,13 +13,13 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
 
-        $section = Section::where('name', $request->product)->first();
+        $section = Subject::where('name', $request->product)->first();
         $id = date('YmdHis');
 
         $data = Transaction::create([
             'id' => $id,
             'user_id' => Auth::id(),
-            'section_id' => $section->id,
+            'subject_id' => $subject->id,
             'ordered_on' => now(),
             'status' => 'pending'
         ]);
@@ -29,5 +29,21 @@ class TransactionController extends Controller
             'message' => 'Silahkan segera lunasi pembayaran'
 
         ]);
+    }
+
+    public function index()
+    {
+
+        $data = Transaction::all();
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $data
+        ]);
+    }
+
+    public function show()
+    {
+        $data = Transaction::find(Auth::id())->get();
     }
 }
