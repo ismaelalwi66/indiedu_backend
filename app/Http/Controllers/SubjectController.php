@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SectionController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.

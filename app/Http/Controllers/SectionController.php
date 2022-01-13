@@ -37,16 +37,10 @@ class SectionController extends Controller
         try {
             Section::create([
                 'title' => $request->section_title,
-                'description' => $request->section_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
                 'subject_id' => $request->subject_id,
             ]);
 
-            $section = Section::where('cover_url', $request->cover_url)->first();
+            $section = Section::where('id', $request->id)->first();
 
             SubSection::create([
                 'title' => $request->subsection_title,
@@ -109,12 +103,6 @@ class SectionController extends Controller
         try {
             $section = Section::find($id)->update([
                 'title' => $request->section_title,
-                'description' => $request->section_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
                 'subject_id' => $request->subject_id,
             ]);
 
