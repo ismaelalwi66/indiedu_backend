@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
+use App\Models\Subject;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
 
-        $section = Subject::where('name', $request->product)->first();
+        $subject = Subject::where('name', $request->product)->first();
         $id = date('YmdHis');
 
         $data = Transaction::create([
