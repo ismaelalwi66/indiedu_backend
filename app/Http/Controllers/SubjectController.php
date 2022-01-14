@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
-use App\Models\SubSection;
+// use App\Models\Section;
+use App\Models\Subject;
+// use App\Models\SubSection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SectionController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +18,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $data = Section::all();
+        $data = Subject::all();
 
         return response()->json([
             'message' => 'Berhasil menampilkan data',
@@ -35,22 +36,28 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         try {
-            Section::create([
+            Subject::create([
                 'title' => $request->section_title,
-                'subject_id' => $request->subject_id,
+                'description' => $request->section_description,
+                'cover' => $request->cover,
+                'cover_url' => $request->cover_url,
+                'slug' => Str::kebab($request->section_title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_category_id' => $request->subject_category_id,
             ]);
 
-            $section = Section::where('id', $request->id)->first();
+            // $section = Section::where('cover_url', $request->cover_url)->first();
 
-            SubSection::create([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-                'section_id' => $section->id,
-            ]);
+            // SubSection::create([
+            //     'title' => $request->subsection_title,
+            //     'description' => $request->subsection_description,
+            //     'article' => $request->article,
+            //     'article_url' => $request->article_url,
+            //     'video' => $request->video,
+            //     'video_url' => $request->video_url,
+            //     'section_id' => $section->id,
+            // ]);
 
             return response()->json([
                 'message' => 'Create Success',
@@ -75,8 +82,8 @@ class SectionController extends Controller
     {
         try {
             $data = [
-                Section::find($id)->first(),
-                Subsection::find($id)->first(),
+                Subject::find($id)->first(),
+                // Subsection::find($id)->first(),
             ];
             return response()->json([
                 'message' => 'Berhasil ditampilkan',
@@ -101,9 +108,15 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $section = Section::find($id)->update([
+            $section = Subject::find($id)->update([
                 'title' => $request->section_title,
-                'subject_id' => $request->subject_id,
+                'description' => $request->section_description,
+                'cover' => $request->cover,
+                'cover_url' => $request->cover_url,
+                'slug' => Str::kebab($request->section_title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_category_id' => $request->subject_category_id,
             ]);
 
             return response()->json([
@@ -120,31 +133,31 @@ class SectionController extends Controller
         }
     }
 
-    public function updateSubsection(Request $request, $id)
-    {
-        try {
-            $subsection = Subsection::find($id)->update([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-            ]);
-            return response()->json([
-                'message' => 'Update Success',
-                'status' => '200',
-                'data' => $subsection,
+    // public function updateSubsection(Request $request, $id)
+    // {
+    //     try {
+    //         $subsection = Subsection::find($id)->update([
+    //             'title' => $request->subsection_title,
+    //             'description' => $request->subsection_description,
+    //             'article' => $request->article,
+    //             'article_url' => $request->article_url,
+    //             'video' => $request->video,
+    //             'video_url' => $request->video_url,
+    //         ]);
+    //         return response()->json([
+    //             'message' => 'Update Success',
+    //             'status' => '200',
+    //             'data' => $subsection,
 
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Delete Success',
-                'status' => '400',
-                'error' => $th,
-            ], 400);
-        }
-    }
+    //         ], 200);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'message' => 'Delete Success',
+    //             'status' => '400',
+    //             'error' => $th,
+    //         ], 400);
+    //     }
+    // }
     /**
      * Remove the specified resource from storage.
      *
@@ -154,7 +167,7 @@ class SectionController extends Controller
     public function destroy($id)
     {
         try {
-            Section::where('id', $id)->first()->delete();
+            Subject::where('id', $id)->first()->delete();
             return response()->json([
                 'message' => 'Section Deleted Success',
                 'status' => '200',
