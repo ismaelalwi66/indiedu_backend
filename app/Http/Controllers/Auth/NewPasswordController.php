@@ -28,7 +28,7 @@ class NewPasswordController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
 
-            $arr = [0,1,2,3,4,5,6,7,8,9];
+            $arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
             $arr = implode('', Arr::random($arr, 6));
 
             $otp_codes = OtpVerification::create([
@@ -40,6 +40,7 @@ class NewPasswordController extends Controller
             Mail::to($request->email)->send(new SendOtpMail($otp_codes, $user->name));
 
             return response()->json([
+                'status' => 'Success',
                 'message' => 'OTP code sent successfully',
                 'user' => $user
             ], 201);
@@ -51,11 +52,13 @@ class NewPasswordController extends Controller
         $otpVerify = otpVerification::orderBy('created_at', "desc")->firstWhere('user_id', $id);
         if ($otpVerify->otp_code == $request->otp) {
             return response()->json([
+                'status' => 'Success',
                 'message' => 'OTP match',
                 'valid' => true
             ], 200);
-        } else{
+        } else {
             return response()->json([
+                'status' => 'Error',
                 'message' => 'OTP is not match',
                 'valid' => false
             ], 403);

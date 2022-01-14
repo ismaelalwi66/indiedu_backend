@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\SubSection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SectionController extends Controller
 {
@@ -22,7 +23,7 @@ class SectionController extends Controller
             'message' => 'Berhasil menampilkan data',
             'status' => '200',
             'data' => $data
-        ]);
+        ], 200);
     }
 
     /**
@@ -33,32 +34,41 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        Section::create([
-            'title' => $request->section_title,
-            'description'=> $request->section_description,
-            'cover' => $request->cover,
-            'cover_url' => $request->cover_url,
-            'slug' => Str::kebab($request->section_title),
-            'grade_id' => $request->grade_id,
-            'subject_id' => $request->subject_id
-        ]);
-        $section = Section::where('cover_url', $request->cover_url)->first();
+        try {
+            Section::create([
+                'title' => $request->section_title,
+                'description' => $request->section_description,
+                'cover' => $request->cover,
+                'cover_url' => $request->cover_url,
+                'slug' => Str::kebab($request->section_title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_id' => $request->subject_id,
+            ]);
 
-        SubSection::create([
-            'title' => $request->subsection_title,
-            'description' => $request->subsection_description,
-            'article' => $request->article,
-            'article_url' => $request->article_url,
-            'video' => $request->video,
-            'video_url' => $request->video_url,
-            'section_id' => $section->id,
-        ]);
+            $section = Section::where('cover_url', $request->cover_url)->first();
 
-        return response()->json([
-            'message' => 'Success',
-            'status' => '200',
-        ]);
+            SubSection::create([
+                'title' => $request->subsection_title,
+                'description' => $request->subsection_description,
+                'article' => $request->article,
+                'article_url' => $request->article_url,
+                'video' => $request->video,
+                'video_url' => $request->video_url,
+                'section_id' => $section->id,
+            ]);
 
+            return response()->json([
+                'message' => 'Create Success',
+                'status' => '200',
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Create Failed',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
+        }
     }
 
     /**
@@ -69,15 +79,22 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        $data = [
-            $section = Section::where('id', $id)->first(),
-            $section = Subsection::where('id', $id)->first(),
-        ];
-        return response()->json([
-            'message' => 'Berhasil ditampilkan',
-            'status' => '200',
-            'data' => $data,
-        ]);
+        try {
+            $data = [
+                Section::find($id)->first(),
+                Subsection::find($id)->first(),
+            ];
+            return response()->json([
+                'message' => 'Berhasil ditampilkan',
+                'status' => '200',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Gagal ditampilkan',
+                'status' => '400',
+            ], 400);
+        }
     }
 
     /**
@@ -89,34 +106,57 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = [
-            $section = Section::where('id', $id)->first(),
-            $section = Subsection::where('id', $id)->first(),
-        ];
-        $data->update([
-            'title' => $request->section_title,
-            'description'=> $request->section_description,
-            'cover' => $request->cover,
-            'cover_url' => $request->cover_url,
-            'slug' => Str::kebab($request->section_title),
-            'grade_id' => $request->grade_id,
-            'subject_id' => $request->subject_id,
-            'title' => $request->subsection_title,
-            'description' => $request->subsection_description,
-            'article' => $request->article,
-            'article_url' => $request->article_url,
-            'video' => $request->video,
-            'video_url' => $request->video_url,
-            'section_id' => $section->id,
-        ]);
-        return response()->json([
-            'message' => 'Update Success',
-            'status' => '200',
-            'data' => $data,
+        try {
+            $section = Section::find($id)->update([
+                'title' => $request->section_title,
+                'description' => $request->section_description,
+                'cover' => $request->cover,
+                'cover_url' => $request->cover_url,
+                'slug' => Str::kebab($request->section_title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_id' => $request->subject_id,
+            ]);
 
-        ]);
+            return response()->json([
+                'message' => 'Update Section Success',
+                'status' => '200',
+                'data' => $section,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Update Section Failed',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
+        }
     }
 
+    public function updateSubsection(Request $request, $id)
+    {
+        try {
+            $subsection = Subsection::find($id)->update([
+                'title' => $request->subsection_title,
+                'description' => $request->subsection_description,
+                'article' => $request->article,
+                'article_url' => $request->article_url,
+                'video' => $request->video,
+                'video_url' => $request->video_url,
+            ]);
+            return response()->json([
+                'message' => 'Update Success',
+                'status' => '200',
+                'data' => $subsection,
+
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Delete Success',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -125,6 +165,18 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-
+        try {
+            Section::where('id', $id)->first()->delete();
+            return response()->json([
+                'message' => 'Section Deleted Success',
+                'status' => '200',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Section Delete Failed',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
+        }
     }
 }

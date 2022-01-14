@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\SociaLiteController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SectionController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubjectCategoryController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\SociaLiteController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 
 
 /*
@@ -48,7 +48,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::apiResource('subject', SubjectController::class);
+    Route::apiResource('category', SubjectCategoryController::class);
 
     // Grade
     Route::get('grade', [GradeController::class, 'index']);

@@ -22,11 +22,11 @@ class GradeController extends Controller
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
                 'data' => $data,
-            ]);
+            ],200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Gagal menampilkan data',
-            ]);
+            ],400);
         }
         }
 
@@ -38,23 +38,23 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:1|max:20',
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                'message'=>'Error! Mohon kolom diisi dengan benar',
-                'errors'=>$validator->errors()
-            ], 404);
-        }else{
-        Grade::create([
-            'name' => $request->name,
-        ]);
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|min:1|max:20',
+            ]);
+            if($validator->fails()){
+                return response()->json([
+                    'message'=>'Error! Mohon kolom diisi dengan benar',
+                    'errors'=>$validator->errors()
+                ], 404);
+            }else{
+                Grade::create([
+                    'name' => $request->name,
+                ]);
 
-        return response()->json([
-            'message' => 'Tingkat kelas berhasil dibuat',
-        ]);
-        }
+                return response()->json([
+                    'message' => 'Tingkat kelas berhasil dibuat',
+                ], 201);
+            }
     }
 
     /**
@@ -65,11 +65,19 @@ class GradeController extends Controller
      */
     public function show($id)
     {
-        $grade = Grade::find($id);
-        return response()->json([
-            'message'=>'Berhasil didapatkan',
-            'data'=>$grade,
-        ]);
+        try {
+            $grade = Grade::find($id)->first();
+            return response()->json([
+                'message'=>'Berhasil didapatkan',
+                'data'=>$grade,
+            ],200);
+        } catch (\Throwable $th) {
+           return response()->json([
+               'message' => 'Data tidak ada',
+               'status' => '400',
+               'error' => $th,
+           ],400);
+        }
     }
 
     /**
@@ -81,13 +89,22 @@ class GradeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $grade = Grade::find($id);
-        $grade->update([
-            'name'=>$request->name,
-        ]);
-        return response()->json([
-            'message'=>'Update Success',
-        ],201);
+        try {
+            $grade = Grade::find($id);
+            $grade->update([
+                'name'=>$request->name,
+            ]);
+            return response()->json([
+                'message'=>'Update Success',
+                'status'=>'200',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Update Gagal',
+                'status' => '400',
+                'error' => $th,
+            ],400);
+        }
     }
 
     /**
@@ -98,9 +115,17 @@ class GradeController extends Controller
      */
     public function destroy($id)
     {
-        Grade::find($id)->delete();
-        return response()->json([
-            'message' => 'Berhasil dihapus'
-        ]);
+        try {
+            Grade::find($id)->delete();
+            return response()->json([
+                'message' => 'Berhasil dihapus'
+            ], 200);
+        } catch (\Throwable $th) {
+    return response()->json([
+        'message' => 'Gagal dihapus',
+        'status' => '400',
+        'error' => $th,
+    ], 400);
+        }
     }
-}
+    }

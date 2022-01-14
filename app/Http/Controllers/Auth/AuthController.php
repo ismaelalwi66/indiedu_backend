@@ -20,8 +20,8 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'Error',
-                'error' => $validator->errors()
-            ]);
+                'message' => $validator->errors()
+            ], 400);
         } else {
             $user = request(['email', 'password']);
             if (Auth::attempt($user)) {
@@ -33,12 +33,12 @@ class AuthController extends Controller
                     'massage' => 'Login Successful',
                     'token' => $token->plainTextToken,
                     'data' => $user
-                ]);
+                ], 200);
             } else {
                 return response()->json([
-                    'Status' => 'Error',
-                    'Message' => 'Login Failed'
-                ]);
+                    'status' => 'Error',
+                    'message' => 'Login Failed'
+                ], 401);
             }
         }
     }

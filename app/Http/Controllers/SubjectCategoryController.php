@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subject;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Models\SubjectCategory;
 
-class SubjectController extends Controller
+class SubjectCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +15,10 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $data = Subject::all();
+        $data = SubjectCategory::all();
 
         return response()->json([
-            'message' => 'success',
+            'message' => 'Success',
             'status' => '200',
             'data' => $data
         ], 200);
@@ -31,8 +32,8 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        Subject::create([
-            'name' => $request->name
+        SubjectCategory::create([
+            'name' => $request->name,
         ]);
 
         return response()->json([
@@ -49,12 +50,12 @@ class SubjectController extends Controller
      */
     public function show($subject)
     {
-        // dd($subject);
-        // $data = Subject::all();
-
-        // return response()->json([
-        //     'data' => $data
-        // ]);
+        $subject = SubjectCategory::where('name', $subject)->first();
+        $data = Section::where('subject_id', $subject->id)->get();
+        return response()->json([
+            'data' => $data,
+            'status' => '200'
+        ], 200);
     }
 
     /**
@@ -64,9 +65,14 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $subject)
     {
-        //
+
+        $data = SubjectCategory::where('name', $subject)->update(['name' => $request->name]);
+        return response()->json([
+            'message' => 'Success',
+            'status' => '200',
+        ], 200);
     }
 
     /**
@@ -75,8 +81,12 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($subject)
     {
-        //
+        $data = SubjectCategory::where('name', $subject)->delete();
+        return response()->json([
+            'message' => 'Delete Success',
+            'status' => '200',
+        ], 200);
     }
 }
