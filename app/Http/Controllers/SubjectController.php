@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 // use App\Models\Section;
+
+use App\Models\Section;
 use App\Models\Subject;
-// use App\Models\SubSection;
+use App\Models\SubSection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SubjectController extends Controller
 {
@@ -36,28 +39,32 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         try {
-            Subject::create([
-                'title' => $request->section_title,
-                'description' => $request->section_description,
+            $subject = Subject::create([
+                'title' => $request->subject_title,
+                'description' => $request->subject_description,
                 'cover' => $request->cover,
                 'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
+                'slug' => Str::kebab($request->subject_title),
                 'teacher_id' => Auth::id(),
                 'grade_id' => $request->grade_id,
                 'subject_category_id' => $request->subject_category_id,
             ]);
 
-            // $section = Section::where('cover_url', $request->cover_url)->first();
+            $section = Section::create([
+                'title' => $request->section_title,
+                'decription' => $request->section_decription,
+                'subject_id' => $subject->id,
+            ]);
 
-            // SubSection::create([
-            //     'title' => $request->subsection_title,
-            //     'description' => $request->subsection_description,
-            //     'article' => $request->article,
-            //     'article_url' => $request->article_url,
-            //     'video' => $request->video,
-            //     'video_url' => $request->video_url,
-            //     'section_id' => $section->id,
-            // ]);
+            $subsection = SubSection::create([
+                'title' => $request->subsection_title,
+                'description' => $request->subsection_description,
+                'article' => $request->article,
+                'article_url' => $request->article_url,
+                'video' => $request->video,
+                'video_url' => $request->video_url,
+                'section_id' => $section->id,
+            ]);
 
             return response()->json([
                 'message' => 'Create Success',
