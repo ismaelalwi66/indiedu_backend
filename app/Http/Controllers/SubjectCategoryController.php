@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SubjectCategory;
 
@@ -15,13 +15,16 @@ class SubjectCategoryController extends Controller
      */
     public function index()
     {
-        $data = SubjectCategory::all();
+        try {
+            $data = SubjectCategory::all();
 
-        return response()->json([
-            'message' => 'Success',
-            'status' => '200',
-            'data' => $data
-        ], 200);
+            return response()->json([
+                'message' => 'Success',
+                'status' => '200',
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+        }
     }
 
     /**
@@ -50,10 +53,10 @@ class SubjectCategoryController extends Controller
      */
     public function show($subject)
     {
-        $subject = SubjectCategory::where('name', $subject)->first();
-        $data = Section::where('subject_id', $subject->id)->get();
+        $subjectcategory = SubjectCategory::where('name', $subject)->first();
+        $subject = Subject::where('subject_id', $subject->id)->get();
         return response()->json([
-            'data' => $data,
+            'data' => [$subjectcategory, $subject],
             'status' => '200'
         ], 200);
     }
