@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('grade/{id}', [GradeController::class, 'destroy']);
 
     // Section
-    Route::apiResource('section', SectionController::class);
+    Route::apiResource('section', SectionController::class)->except('index');
     Route::apiResource('subject', SubjectController::class);
 
     //Subsection
