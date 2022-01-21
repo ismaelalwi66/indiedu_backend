@@ -36,18 +36,18 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         try {
-        $cover = $request->cover->store('/images','s3','public');
-        $cover_url = Storage::disk('s3')->url($cover);
+            $cover = $request->cover->store('/images', 's3', 'public');
+            $cover_url = Storage::disk('s3')->url($cover);
 
-          $data = Subject::create([
-              'title' => $request->title,
-              'description' => $request->description,
-              'cover' => basename($cover),
-              'cover_url' => $cover_url,
-              'slug' => Str::kebab($request->title),
-              'teacher_id' => Auth::id(),
-              'grade_id' => $request->grade_id,
-              'subject_category_id' => $request->subject_category_id,
+            $data = Subject::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'cover' => basename($cover),
+                'cover_url' => $cover_url,
+                'slug' => Str::kebab($request->title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_category_id' => $request->subject_category_id,
             ]);
 
             return response()->json([
@@ -72,14 +72,14 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-            $data = Subject::where('id', $id)->first();
-            if ($data == null) {
-                return response()->json([
-                    'message' => 'Gagal ditampilkan',
-                    'status' => '400',
-                    'data' => 'null',
-                ], 400);
-            } else{
+        $data = Subject::where('id', $id)->first();
+        if ($data == null) {
+            return response()->json([
+                'message' => 'Gagal ditampilkan',
+                'status' => '400',
+                'data' => 'null',
+            ], 400);
+        } else {
             return response()->json([
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
@@ -98,7 +98,7 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $cover = $request->cover->store('/images','s3','public');
+            $cover = $request->cover->store('/images', 's3', 'public');
             $cover_url = Storage::disk('s3')->url($cover);
 
             $data = Subject::find($id)->update([
@@ -106,25 +106,25 @@ class SubjectController extends Controller
                 'description' => $request->description,
                 'cover' => basename($cover),
                 'cover_url' => $cover_url,
-                  'slug' => Str::kebab($request->title),
-                  'teacher_id' => Auth::id(),
-                  'grade_id' => $request->grade_id,
-                  'subject_category_id' => $request->subject_category_id,
-                ]);
+                'slug' => Str::kebab($request->title),
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_category_id' => $request->subject_category_id,
+            ]);
 
-                return response()->json([
-                    'message' => 'Update Subject Success',
-                    'status' => '200',
-                    'data' => $data,
-                ], 200);
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'message' => 'Update Subject Failed',
-                    'status' => '400',
-                    'error' => $th,
-                ], 400);
-            }
+            return response()->json([
+                'message' => 'Update Subject Success',
+                'status' => '200',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Update Subject Failed',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
         }
+    }
 
     /**
      * Remove the specified resource from storage.
