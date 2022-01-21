@@ -37,8 +37,8 @@ class  SubjectController extends Controller
     public function store(Request $request)
     {
         try {
-        $cover = $request->cover->store('/images','s3','public');
-        $cover_url = Storage::disk('s3')->url($cover);
+            $cover = $request->cover->store('/images', 's3', 'public');
+            $cover_url = Storage::disk('s3')->url($cover);
 
           $data = Subject::create([
               'title' => $request->title,
@@ -103,7 +103,7 @@ class  SubjectController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $cover = $request->cover->store('/images','s3','public');
+            $cover = $request->cover->store('/images', 's3', 'public');
             $cover_url = Storage::disk('s3')->url($cover);
 
             $data = Subject::find($id)->update([
@@ -119,19 +119,19 @@ class  SubjectController extends Controller
                 'subject_category_id' => $request->subject_category_id,
                 ]);
 
-                return response()->json([
-                    'message' => 'Update Subject Success',
-                    'status' => '200',
-                    'data' => $data,
-                ], 200);
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'message' => 'Update Subject Failed',
-                    'status' => '400',
-                    'error' => $th,
-                ], 400);
-            }
+            return response()->json([
+                'message' => 'Update Subject Success',
+                'status' => '200',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Update Subject Failed',
+                'status' => '400',
+                'error' => $th,
+            ], 400);
         }
+    }
 
     /**
      * Remove the specified resource from storage.
