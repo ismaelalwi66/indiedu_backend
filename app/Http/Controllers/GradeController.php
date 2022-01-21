@@ -40,6 +40,7 @@ class GradeController extends Controller
     {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|min:1|max:20',
+                'type' => 'required|string|min:1|max:20',
             ]);
             if($validator->fails()){
                 return response()->json([
@@ -49,6 +50,7 @@ class GradeController extends Controller
             }else{
                 Grade::create([
                     'name' => $request->name,
+                    'type' => $request->type,
                 ]);
 
                 return response()->json([
@@ -93,6 +95,7 @@ class GradeController extends Controller
             $grade = Grade::find($id);
             $grade->update([
                 'name'=>$request->name,
+                'type'=>$request->type,
             ]);
             return response()->json([
                 'message'=>'Update Success',

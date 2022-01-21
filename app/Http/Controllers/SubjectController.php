@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\Section;
 
-use App\Models\Section;
 use App\Models\Subject;
-use App\Models\SubSection;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class SubjectController extends Controller
 {
@@ -39,36 +36,24 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         try {
-            $subject = Subject::create([
-                'title' => $request->subject_title,
-                'description' => $request->subject_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->subject_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
-                'subject_category_id' => $request->subject_category_id,
-            ]);
+        $cover = $request->cover->store('/images','s3','public');
+        $cover_url = Storage::disk('s3')->url($cover);
 
-            $section = Section::create([
-                'title' => $request->section_title,
-                'decription' => $request->section_decription,
-                'subject_id' => $subject->id,
-            ]);
-
-            $subsection = SubSection::create([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-                'section_id' => $section->id,
+          $data = Subject::create([
+              'title' => $request->title,
+              'description' => $request->description,
+              'cover' => basename($cover),
+              'cover_url' => $cover_url,
+              'slug' => Str::kebab($request->title),
+              'teacher_id' => Auth::id(),
+              'grade_id' => $request->grade_id,
+              'subject_category_id' => $request->subject_category_id,
             ]);
 
             return response()->json([
                 'message' => 'Create Success',
                 'status' => '200',
+                'data' => $data,
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -87,21 +72,19 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        try {
-            $data = [
-                Subject::find($id)->first(),
-                // Subsection::find($id)->first(),
-            ];
+            $data = Subject::where('id', $id)->first();
+            if ($data == null) {
+                return response()->json([
+                    'message' => 'Gagal ditampilkan',
+                    'status' => '400',
+                    'data' => 'null',
+                ], 400);
+            } else{
             return response()->json([
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
                 'data' => $data,
             ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Gagal ditampilkan',
-                'status' => '400',
-            ], 400);
         }
     }
 
@@ -115,56 +98,34 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $section = Subject::find($id)->update([
-                'title' => $request->section_title,
-                'description' => $request->section_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
-                'subject_category_id' => $request->subject_category_id,
-            ]);
+            $cover = $request->cover->store('/images','s3','public');
+            $cover_url = Storage::disk('s3')->url($cover);
 
-            return response()->json([
-                'message' => 'Update Section Success',
-                'status' => '200',
-                'data' => $section,
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Update Section Failed',
-                'status' => '400',
-                'error' => $th,
-            ], 400);
+            $data = Subject::find($id)->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'cover' => basename($cover),
+                'cover_url' => $cover_url,
+                  'slug' => Str::kebab($request->title),
+                  'teacher_id' => Auth::id(),
+                  'grade_id' => $request->grade_id,
+                  'subject_category_id' => $request->subject_category_id,
+                ]);
+
+                return response()->json([
+                    'message' => 'Update Subject Success',
+                    'status' => '200',
+                    'data' => $data,
+                ], 200);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'message' => 'Update Subject Failed',
+                    'status' => '400',
+                    'error' => $th,
+                ], 400);
+            }
         }
-    }
 
-    // public function updateSubsection(Request $request, $id)
-    // {
-    //     try {
-    //         $subsection = Subsection::find($id)->update([
-    //             'title' => $request->subsection_title,
-    //             'description' => $request->subsection_description,
-    //             'article' => $request->article,
-    //             'article_url' => $request->article_url,
-    //             'video' => $request->video,
-    //             'video_url' => $request->video_url,
-    //         ]);
-    //         return response()->json([
-    //             'message' => 'Update Success',
-    //             'status' => '200',
-    //             'data' => $subsection,
-
-    //         ], 200);
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'message' => 'Delete Success',
-    //             'status' => '400',
-    //             'error' => $th,
-    //         ], 400);
-    //     }
-    // }
     /**
      * Remove the specified resource from storage.
      *
@@ -176,12 +137,12 @@ class SubjectController extends Controller
         try {
             Subject::where('id', $id)->first()->delete();
             return response()->json([
-                'message' => 'Section Deleted Success',
+                'message' => 'Subject Deleted Success',
                 'status' => '200',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Section Delete Failed',
+                'message' => 'Subject Delete Failed',
                 'status' => '400',
                 'error' => $th,
             ], 400);
