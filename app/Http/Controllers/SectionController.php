@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use App\Models\SubSection;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class SectionController extends Controller
 {
@@ -17,13 +17,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $data = Section::all();
-
-        return response()->json([
-            'message' => 'Berhasil menampilkan data',
-            'status' => '200',
-            'data' => $data
-        ], 200);
+        //
     }
 
     /**
@@ -36,37 +30,20 @@ class SectionController extends Controller
     {
         try {
             Section::create([
-                'title' => $request->section_title,
-                'description' => $request->section_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
+                'title' => $request->title,
+                'decription' => $request->decription,
                 'subject_id' => $request->subject_id,
             ]);
 
-            $section = Section::where('cover_url', $request->cover_url)->first();
-
-            SubSection::create([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-                'section_id' => $section->id,
-            ]);
-
             return response()->json([
-                'message' => 'Create Success',
-                'status' => '200',
+                'message' => 'success',
+                'status' => '201',
             ], 201);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Create Failed',
-                'status' => '400',
-                'error' => $th,
+                'message' => 'error',
+                'status' => '404',
+                'error' => $e->getMessage()
             ], 400);
         }
     }
@@ -80,19 +57,19 @@ class SectionController extends Controller
     public function show($id)
     {
         try {
-            $data = [
-                Section::find($id)->first(),
-                Subsection::find($id)->first(),
-            ];
+            $section = Section::findOrFail($id);
+            $subsection = SubSection::where('section_id', $section->id)->get();
+            $data = ['section' => $section, 'subsection' => $subsection];
             return response()->json([
-                'message' => 'Berhasil ditampilkan',
+                'message' => 'success',
                 'status' => '200',
-                'data' => $data,
+                'data' => $data
             ], 200);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Gagal ditampilkan',
-                'status' => '400',
+                'message' => 'error',
+                'status' => '404',
+                'error' => $e->getMessage()
             ], 400);
         }
     }
@@ -107,56 +84,24 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $section = Section::find($id)->update([
-                'title' => $request->section_title,
-                'description' => $request->section_description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->section_title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
-                'subject_id' => $request->subject_id,
+            Section::findOrfail($id)->update([
+                'title' => $request->title,
+                'decription' => $request->decription,
             ]);
 
             return response()->json([
-                'message' => 'Update Section Success',
+                'message' => 'success',
                 'status' => '200',
-                'data' => $section,
             ], 200);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Update Section Failed',
-                'status' => '400',
-                'error' => $th,
+                'message' => 'error',
+                'status' => '404',
+                'error' => $e->getMessage()
             ], 400);
         }
     }
 
-    public function updateSubsection(Request $request, $id)
-    {
-        try {
-            $subsection = Subsection::find($id)->update([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-            ]);
-            return response()->json([
-                'message' => 'Update Success',
-                'status' => '200',
-                'data' => $subsection,
-
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Delete Success',
-                'status' => '400',
-                'error' => $th,
-            ], 400);
-        }
-    }
     /**
      * Remove the specified resource from storage.
      *
@@ -166,17 +111,17 @@ class SectionController extends Controller
     public function destroy($id)
     {
         try {
-            Section::where('id', $id)->first()->delete();
+            Section::findOrFail($id)->delete();
             return response()->json([
-                'message' => 'Section Deleted Success',
+                'message' => 'Delete Success',
                 'status' => '200',
             ], 200);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Section Delete Failed',
-                'status' => '400',
-                'error' => $th,
-            ], 400);
+                'message' => 'error',
+                'status' => '404',
+                'error' => $e->getMessage()
+            ], 404);
         }
     }
 }

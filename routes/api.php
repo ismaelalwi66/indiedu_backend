@@ -6,10 +6,12 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Auth\SociaLiteController;
+use App\Http\Controllers\SubjectCategoryController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\SubSectionController;
+
 
 
 /*
@@ -49,7 +51,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::apiResource('subject', SubjectController::class);
+    Route::apiResource('category', SubjectCategoryController::class);
 
     // Grade
     Route::get('grade', [GradeController::class, 'index']);
@@ -59,7 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('grade/{id}', [GradeController::class, 'destroy']);
 
     // Section
-    Route::apiResource('section', SectionController::class);
-});
+    Route::apiResource('section', SectionController::class)->except('index');
+    Route::apiResource('subject', SubjectController::class);
 
-Route::post('section/{slug}checkout', [TransactionController::class, 'store']);
+    //Subsection
+    Route::apiResource('subsection', SubSectionController::class)->except('index');
+});
