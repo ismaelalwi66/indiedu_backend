@@ -46,6 +46,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
     Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
+    //Subject
+    Route::get('/subject', [SubjectController::class, 'index']);
+    Route::get('/subject/{id}', [SubjectController::class, 'show']);
 });
 
 
@@ -63,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Section
     Route::apiResource('section', SectionController::class)->except('index');
-    Route::apiResource('subject', SubjectController::class);
+    Route::apiResource('subject', SubjectController::class)->except('index','show');
 
     //Subsection
     Route::apiResource('subsection', SubSectionController::class)->except('index');

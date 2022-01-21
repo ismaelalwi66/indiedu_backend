@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class SubjectController extends Controller
+class  SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -72,7 +73,9 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-            $data = Subject::where('id', $id)->first();
+        $subject = Subject::findOrFail($id);
+        $section = Section::where('subject_id', $subject->id)->get();
+        $data = ['subject' => $subject, 'section' => $section];
             if ($data == null) {
                 return response()->json([
                     'message' => 'Gagal ditampilkan',
