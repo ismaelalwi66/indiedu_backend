@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\SociaLiteController;
 use App\Http\Controllers\SubjectCategoryController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\SubSectionController;
+
 
 
 /*
@@ -48,6 +50,7 @@ Route::middleware('guest')->group(function () {
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('category', SubjectCategoryController::class);
 
@@ -59,9 +62,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('grade/{id}', [GradeController::class, 'destroy']);
 
     // Section
-    Route::apiResource('section', SectionController::class);
+    Route::apiResource('section', SectionController::class)->except('index');
     Route::apiResource('subject', SubjectController::class);
 
     //Subsection
-    Route::put('subsection/{id}', [SectionController::class, 'updateSubsection']);
+    Route::apiResource('subsection', SubSectionController::class)->except('index');
 });

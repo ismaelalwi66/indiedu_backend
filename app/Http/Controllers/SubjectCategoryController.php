@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SubjectCategory;
 
@@ -15,13 +15,20 @@ class SubjectCategoryController extends Controller
      */
     public function index()
     {
-        $data = SubjectCategory::all();
+        try {
+            $data = SubjectCategory::all();
 
-        return response()->json([
-            'message' => 'Success',
-            'status' => '200',
-            'data' => $data
-        ], 200);
+            return response()->json([
+                'message' => 'Success',
+                'status' => '200',
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => '404',
+            ], 404);
+        }
     }
 
     /**
@@ -32,14 +39,21 @@ class SubjectCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        SubjectCategory::create([
-            'name' => $request->name,
-        ]);
+        try {
+            SubjectCategory::create([
+                'name' => $request->name,
+            ]);
 
-        return response()->json([
-            'message' => 'success',
-            'status' => '200'
-        ], 200);
+            return response()->json([
+                'message' => 'success',
+                'status' => '200'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => '404',
+            ], 404);
+        }
     }
 
     /**
@@ -50,12 +64,19 @@ class SubjectCategoryController extends Controller
      */
     public function show($subject)
     {
-        $subject = SubjectCategory::where('name', $subject)->first();
-        $data = Section::where('subject_id', $subject->id)->get();
-        return response()->json([
-            'data' => $data,
-            'status' => '200'
-        ], 200);
+        try {
+            $subjectcategory = SubjectCategory::where('name', $subject)->first();
+            $subject = Subject::where('subject_id', $subject->id)->get();
+            return response()->json([
+                'data' => [$subjectcategory, $subject],
+                'status' => '200'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => '404',
+            ], 404);
+        }
     }
 
     /**
@@ -67,12 +88,18 @@ class SubjectCategoryController extends Controller
      */
     public function update(Request $request, $subject)
     {
-
-        $data = SubjectCategory::where('name', $subject)->update(['name' => $request->name]);
-        return response()->json([
-            'message' => 'Success',
-            'status' => '200',
-        ], 200);
+        try {
+            $data = SubjectCategory::where('name', $subject)->update(['name' => $request->name]);
+            return response()->json([
+                'message' => 'Success',
+                'status' => '200',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => '404',
+            ], 404);
+        }
     }
 
     /**
@@ -83,10 +110,17 @@ class SubjectCategoryController extends Controller
      */
     public function destroy($subject)
     {
-        $data = SubjectCategory::where('name', $subject)->delete();
-        return response()->json([
-            'message' => 'Delete Success',
-            'status' => '200',
-        ], 200);
+        try {
+            $data = SubjectCategory::where('name', $subject)->delete();
+            return response()->json([
+                'message' => 'Delete Success',
+                'status' => '200',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => '404',
+            ], 404);
+        }
     }
 }
