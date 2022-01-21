@@ -125,31 +125,6 @@ class SubjectController extends Controller
                 ], 400);
             }
         }
-    //     try {
-    //         $data = Subject::find($id)->update([
-    //             'title' => $request->title,
-    //             'description' => $request->description,
-    //             'cover' => $request->cover,
-    //             'cover_url' => $request->cover_url,
-    //             'slug' => Str::kebab($request->title),
-    //             'teacher_id' => Auth::id(),
-    //             'grade_id' => $request->grade_id,
-    //             'subject_category_id' => $request->subject_category_id,
-    //         ]);
-
-    //         return response()->json([
-    //             'message' => 'Update Subject Success',
-    //             'status' => '200',
-    //             'data' => $data,
-    //         ], 200);
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'message' => 'Update Subject Failed',
-    //             'status' => '400',
-    //             'error' => $th,
-    //         ], 400);
-    //     }
-    // }
 
     /**
      * Remove the specified resource from storage.
