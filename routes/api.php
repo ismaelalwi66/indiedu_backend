@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\SociaLiteController;
 use App\Http\Controllers\SubjectCategoryController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\SubSectionController;
+
 
 
 /*
@@ -63,5 +65,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('subject', SubjectController::class);
 
     //Subsection
-    Route::put('subsection/{id}', [SectionController::class, 'updateSubsection']);
+    Route::apiResource('subsection', SubSectionController::class)->except('index');
 });
