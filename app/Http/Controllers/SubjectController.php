@@ -46,6 +46,8 @@ class  SubjectController extends Controller
               'cover' => basename($cover),
               'cover_url' => $cover_url,
               'slug' => Str::kebab($request->title),
+              'price' => $request->price,
+              'status' => $request->status,
               'teacher_id' => Auth::id(),
               'grade_id' => $request->grade_id,
               'subject_category_id' => $request->subject_category_id,
@@ -109,10 +111,12 @@ class  SubjectController extends Controller
                 'description' => $request->description,
                 'cover' => basename($cover),
                 'cover_url' => $cover_url,
-                  'slug' => Str::kebab($request->title),
-                  'teacher_id' => Auth::id(),
-                  'grade_id' => $request->grade_id,
-                  'subject_category_id' => $request->subject_category_id,
+                'slug' => Str::kebab($request->title),
+                'price' => $request->price,
+                'status' => $request->status,
+                'teacher_id' => Auth::id(),
+                'grade_id' => $request->grade_id,
+                'subject_category_id' => $request->subject_category_id,
                 ]);
 
                 return response()->json([
