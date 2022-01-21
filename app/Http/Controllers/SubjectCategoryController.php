@@ -62,13 +62,14 @@ class SubjectCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($subject)
+    public function show($id)
     {
         try {
-            $subjectcategory = SubjectCategory::where('name', $subject)->first();
-            $subject = Subject::where('subject_id', $subject->id)->get();
+            $subjectcategory = SubjectCategory::where('id', $id)->firstOrFail();
+            $subject = Subject::where('subject_category_id', $subjectcategory->id)->get();
+            $data = ['subject category' => $subjectcategory, 'subject' => $subject];
             return response()->json([
-                'data' => [$subjectcategory, $subject],
+                'data' => $data,
                 'status' => '200'
             ], 200);
         } catch (\Exception $e) {
@@ -86,10 +87,10 @@ class SubjectCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $subject)
+    public function update(Request $request, $id)
     {
         try {
-            $data = SubjectCategory::where('name', $subject)->update(['name' => $request->name]);
+            SubjectCategory::findOrFail($id)->update(['name' => $request->name]);
             return response()->json([
                 'message' => 'Success',
                 'status' => '200',
@@ -108,10 +109,10 @@ class SubjectCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($subject)
+    public function destroy($id)
     {
         try {
-            $data = SubjectCategory::where('name', $subject)->delete();
+            SubjectCategory::findOrFail($id)->delete();
             return response()->json([
                 'message' => 'Delete Success',
                 'status' => '200',
