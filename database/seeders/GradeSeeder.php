@@ -16,6 +16,7 @@ class GradeSeeder extends Seeder
     {
         Grade::create([
             'name' => 'IX',
+            'type' => 'SMP',
         ]);
     }
 }
