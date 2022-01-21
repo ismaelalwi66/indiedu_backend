@@ -7,6 +7,7 @@ use App\Models\Subject;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class SubjectController extends Controller
 {
@@ -35,15 +36,18 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         try {
+        $cover = $request->cover->store('/images','s3','public');
+        $cover_url = Storage::disk('s3')->url($cover);
+
           $data = Subject::create([
-                'title' => $request->title,
-                'description' => $request->description,
-                'cover' => $request->cover,
-                'cover_url' => $request->cover_url,
-                'slug' => Str::kebab($request->title),
-                'teacher_id' => Auth::id(),
-                'grade_id' => $request->grade_id,
-                'subject_category_id' => $request->subject_category_id,
+              'title' => $request->title,
+              'description' => $request->description,
+              'cover' => basename($cover),
+              'cover_url' => $cover_url,
+              'slug' => Str::kebab($request->title),
+              'teacher_id' => Auth::id(),
+              'grade_id' => $request->grade_id,
+              'subject_category_id' => $request->subject_category_id,
             ]);
 
             return response()->json([
