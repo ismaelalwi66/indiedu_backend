@@ -19,9 +19,11 @@ class SubjectSeeder extends Seeder
             'description' => 'ini section percobaan',
             'cover' => 'nama cover',
             'cover_url'=> 'url.coma',
+            'slug' => 'matematika-kelas-satu',
+            'price' => '100000',
+            'status' => 'Unpublish',
             'grade_id' => '1',
             'teacher_id' => '1',
-            'slug' => 'matematika-kelas-satu',
             'subject_category_id' => '1',
         ]);
     }
