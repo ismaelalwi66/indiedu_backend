@@ -59,7 +59,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/section/{id}', [SectionController::class, 'show']);
 
     // Subsection
-    Route::get('/subsection', [SubSectionController::class, 'index']);
     Route::get('/subsection/{id}', [SubSectionController::class, 'show']);
 
     // Grade
