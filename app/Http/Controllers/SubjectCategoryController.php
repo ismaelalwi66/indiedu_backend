@@ -70,7 +70,7 @@ class SubjectCategoryController extends Controller
             $data = ['subject category' => $subjectcategory, 'subject' => $subject];
             return response()->json([
                 'data' => $data,
-                'status' => '200'
+                'status' => '200',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

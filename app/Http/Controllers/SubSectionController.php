@@ -17,6 +17,13 @@ class SubSectionController extends Controller
      */
     public function index()
     {
+      $data = SubSection::all();
+
+      return response()->json([
+          'message' => 'Berhasil menampilkan data',
+          'status' => '200',
+          'data' => $data
+      ], 200);
     }
 
     /**
@@ -102,32 +109,6 @@ class SubSectionController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Update Failed',
-                'status' => '400',
-                'error' => $th,
-            ], 400);
-        }
-    }
-
-    public function updateSubsection(Request $request, $id)
-    {
-        try {
-            $subsection = Subsection::find($id)->update([
-                'title' => $request->subsection_title,
-                'description' => $request->subsection_description,
-                'article' => $request->article,
-                'article_url' => $request->article_url,
-                'video' => $request->video,
-                'video_url' => $request->video_url,
-            ]);
-            return response()->json([
-                'message' => 'Update Success',
-                'status' => '200',
-                'data' => $subsection,
-
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Delete Success',
                 'status' => '400',
                 'error' => $th,
             ], 400);
