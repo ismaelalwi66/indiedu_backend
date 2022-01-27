@@ -28,7 +28,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             $response = [
                 'status' => 'Error',
-                'massage' => 'Register Error',
+                'message' => 'Register Error',
                 'errors' => $validator->errors()
             ];
             return response()->json($response, 401);
@@ -48,13 +48,13 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'Success',
-                    'massage' => 'Register Successful and Verification Link Sent',
+                    'message' => 'Register Successful and Verification Link Sent',
                     'token' => $token->plainTextToken
                 ], 201);
             } else {
                 return response()->json([
                     'status' => 'Error',
-                    'massage' => 'Email already registered',
+                    'message' => 'Email already registered',
                 ], 400);
             }
         }

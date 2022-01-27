@@ -30,9 +30,8 @@ class AuthController extends Controller
 
                 return response()->json([
                     'status' => 'Success',
-                    'massage' => 'Login Successful',
+                    'message' => 'Login Successful',
                     'token' => $token->plainTextToken,
-                    'data' => $user
                 ], 200);
             } else {
                 return response()->json([
@@ -52,6 +51,12 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'Success',
             'message' => 'logout success'
+        ]);
+    }
+
+    public function me(Request $request){
+        return response()->json([
+            'user' => $request->user()
         ]);
     }
 }

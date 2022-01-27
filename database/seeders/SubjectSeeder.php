@@ -15,14 +15,16 @@ class SubjectSeeder extends Seeder
     public function run()
     {
         Subject::create([
-            'title' => 'Matematika Kelas 1',
-            'description' => 'ini section percobaan',
+            'title' => 'Matematika',
+            'description' => 'Ini deskripsi dari subject',
             'cover' => 'nama cover',
             'cover_url'=> 'url.coma',
-            'grade_id' => '1',
-            'teacher_id' => '1',
             'slug' => 'matematika-kelas-satu',
-            'subject_category_id' => '1',
+            'price' => '100000',
+            'status' => 'Unpublish',
+            'grade_id' => 1,
+            'teacher_id' => 1,
+            'subject_category_id' => 1,
         ]);
     }
 }

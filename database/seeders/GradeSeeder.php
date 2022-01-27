@@ -15,7 +15,8 @@ class GradeSeeder extends Seeder
     public function run()
     {
         Grade::create([
-            'name' => 'IX',
+            'name' => 2,
+          'type' => 'SD',
         ]);
     }
 }

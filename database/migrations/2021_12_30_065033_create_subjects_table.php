@@ -20,6 +20,8 @@ class CreateSubjectsTable extends Migration
             $table->string('cover');
             $table->string('cover_url');
             $table->string('slug')->unique();
+            $table->integer('price');
+            $table->string('status');
 
             $table->unsignedInteger('teacher_id');
             $table->unsignedBigInteger('grade_id');
