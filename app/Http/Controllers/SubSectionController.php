@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubSection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SubSectionController extends Controller
 {
@@ -11,11 +12,16 @@ class SubSectionController extends Controller
     {
         try {
 
+            $file_name = $request->file->getClientOriginalName();
+            $file = Storage::disk('s3')->put('resource/file', $request->file);
+            $url_file = Storage::disk('s3')->url($file);
+
+
             SubSection::create([
                 'title' => $request->subsection_title,
                 'description' => $request->subsection_description,
-                'article' => $request->subsection_article,
-                'article_url' => $request->subsection_article_url,
+                'article' => $request->$file_name,
+                'article_url' => $request->$url_file,
                 'video' => $request->subsection_video,
                 'video_url' => $request->subsection_video_url,
                 'section_id' => $request->section_id,
