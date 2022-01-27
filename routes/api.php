@@ -46,7 +46,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
     Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
-    
+
     // Subject
     Route::get('/subject', [SubjectController::class, 'index']);
     Route::get('/subject/{id}', [SubjectController::class, 'show']);
@@ -73,13 +73,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Subject
     Route::post('subject', [SubjectController::class, 'store']);
-    Route::post('subject/${id}', [SubjectController::class, 'update']);
-    Route::delete('subject/${id}', [SubjectController::class, 'destroy']);
+    Route::post('subject/{id}', [SubjectController::class, 'update']);
+    Route::delete('subject/{id}', [SubjectController::class, 'destroy']);
 
     // SubjectCategory
     Route::post('category', [SubjectCategoryController::class, 'store']);
-    Route::post('category/${id}', [SubjectCategoryController::class, 'update']);
-    Route::delete('category/${id}', [SubjectCategoryController::class, 'destroy']);
+    Route::post('category/{id}', [SubjectCategoryController::class, 'update']);
+    Route::delete('category/{id}', [SubjectCategoryController::class, 'destroy']);
 
     // Grade
     Route::post('grade', [GradeController::class, 'store']);
