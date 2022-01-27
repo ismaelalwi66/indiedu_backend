@@ -73,13 +73,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Subject
     Route::post('subject', [SubjectController::class, 'store']);
-    Route::post('subject/${id}', [SubjectController::class, 'update']);
-    Route::delete('subject/${id}', [SubjectController::class, 'destroy']);
+    Route::post('subject/{id}', [SubjectController::class, 'update']);
+    Route::delete('subject/{id}', [SubjectController::class, 'destroy']);
 
     // SubjectCategory
     Route::post('category', [SubjectCategoryController::class, 'store']);
-    Route::post('category/${id}', [SubjectCategoryController::class, 'update']);
-    Route::delete('category/${id}', [SubjectCategoryController::class, 'destroy']);
+    Route::post('category/{id}', [SubjectCategoryController::class, 'update']);
+    Route::delete('category/{id}', [SubjectCategoryController::class, 'destroy']);
 
     // Grade
     Route::post('grade', [GradeController::class, 'store']);
