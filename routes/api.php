@@ -11,7 +11,7 @@ use App\Http\Controllers\SubjectCategoryController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\SubSectionController;
-
+use App\Http\Controllers\TransactionController;
 
 
 /*
@@ -95,4 +95,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('subsection', [SubSectionController::class, 'store']);
     Route::post('subsection/{id}', [SubSectionController::class, 'update']);
     Route::delete('subsection/{id}', [SubSectionController::class, 'destroy']);
+
+    // Transaction
+
+    Route::apiResource('transaction', TransactionController::class);
 });

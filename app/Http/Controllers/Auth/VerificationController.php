@@ -34,7 +34,7 @@ class VerificationController extends Controller
                 //     'status' => 'Success',
                 //     'message' => 'Email has been verified'
                 // ]);
-                return redirect('https://indiedu-vue-kelompok2.netlify.app/');
+                return redirect('https://indiedu-nuxt-dev.netlify.app/');
             } else {
                 return response()->json([
                     'status' => 'Error',
