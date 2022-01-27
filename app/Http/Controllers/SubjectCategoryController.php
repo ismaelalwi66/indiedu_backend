@@ -35,8 +35,8 @@ class SubjectCategoryController extends Controller
 
             return response()->json([
                 'message' => 'success',
-                'status' => '200'
-            ], 200);
+                'status' => '201'
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
