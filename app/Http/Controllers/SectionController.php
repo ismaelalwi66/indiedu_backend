@@ -31,7 +31,7 @@ class SectionController extends Controller
         try {
             Section::create([
                 'title' => $request->title,
-                'decription' => $request->decription,
+                'description' => $request->description,
                 'subject_id' => $request->subject_id,
             ]);
 
@@ -86,7 +86,7 @@ class SectionController extends Controller
         try {
             Section::findOrfail($id)->update([
                 'title' => $request->title,
-                'decription' => $request->decription,
+                'description' => $request->description,
             ]);
 
             return response()->json([
