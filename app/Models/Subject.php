@@ -12,7 +12,7 @@ class Subject extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function user()
+    public function teacher()
     {
         return $this->belongsTo(User::class, 'teacher_id', 'id');
     }
@@ -21,4 +21,6 @@ class Subject extends Model
     {
     return $this->hasMany(Section::class);
     }
+
+
 }

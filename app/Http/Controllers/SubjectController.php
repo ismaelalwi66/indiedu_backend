@@ -57,10 +57,10 @@ class  SubjectController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Subject $subject)
     {
-        $data = Subject::with('sections')->where('id',$id)->first();
-        $user = User::where('id', $data->teacher_id)->first();
+
+        $data = $subject->load('sections','teacher:id,name');
             if ($data == null) {
                 return response()->json([
                     'message' => 'Gagal ditampilkan',
@@ -72,7 +72,6 @@ class  SubjectController extends Controller
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
                 'data' => $data,
-                'teacher_name' => $user->name,
             ], 200);
         }
     }

@@ -49,7 +49,7 @@ Route::middleware('guest')->group(function () {
 
     // Subject
     Route::get('/subject', [SubjectController::class, 'index']);
-    Route::get('/subject/{id}', [SubjectController::class, 'show']);
+    Route::get('/subject/{subject:slug}', [SubjectController::class, 'show']);
 
     // SubjectCategory
     Route::get('/category', [SubjectCategoryController::class, 'index']);
