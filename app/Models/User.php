@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Subject;
 use App\Models\SocialAccount;
 use App\Models\OtpVerification;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -51,4 +52,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(OtpVerification::class);
     }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class, 'id', 'teacher_id');
+    }
+
 }

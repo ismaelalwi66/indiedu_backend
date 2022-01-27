@@ -34,13 +34,11 @@ class SectionController extends Controller
     public function show($id)
     {
         try {
-            $section = Section::findOrFail($id);
-            $subsection = SubSection::where('section_id', $section->id)->get();
-            $data = ['section' => $section, 'subsection' => $subsection];
+            $data = Section::with('subsections')->where('id', $id)->first();
             return response()->json([
                 'message' => 'success',
                 'status' => '200',
-                'data' => $data
+                'data' => $data,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

@@ -95,7 +95,7 @@ class GradeController extends Controller
         } catch (\Throwable $th) {
           return response()->json([
               'message' => 'Gagal dihapus',
-              'status' => '400',
+              'status ' => '400',
               'error' => $th,
           ], 400);
         }

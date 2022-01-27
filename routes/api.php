@@ -49,17 +49,17 @@ Route::middleware('guest')->group(function () {
 
     // Subject
     Route::get('/subject', [SubjectController::class, 'index']);
-    Route::get('/subject/{id}', [SubjectController::class, 'show']);
+    Route::get('/subject/{subject:slug}', [SubjectController::class, 'show']);
 
     // SubjectCategory
     Route::get('/category', [SubjectCategoryController::class, 'index']);
     Route::get('/category/{id}', [SubjectCategoryController::class, 'show']);
 
     // Section
-    Route::get('/section/{id}', [SectionController::class, 'show']);
+    Route::get('section/{id}', [SectionController::class, 'show']);
 
     // Subsection
-    Route::get('/subsection/{id}', [SubSectionController::class, 'show']);
+    Route::get('subsection/{id}', [SubSectionController::class, 'show']);
 
     // Grade
     Route::get('grade', [GradeController::class, 'index']);
