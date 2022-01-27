@@ -46,7 +46,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
     Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
-    
+
     // Subject
     Route::get('/subject', [SubjectController::class, 'index']);
     Route::get('/subject/{id}', [SubjectController::class, 'show']);
@@ -56,10 +56,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/category/{id}', [SubjectCategoryController::class, 'show']);
 
     // Section
-    Route::get('/section/{id}', [SectionController::class, 'show']);
+    Route::get('section/{id}', [SectionController::class, 'show']);
 
     // Subsection
-    Route::get('/subsection/{id}', [SubSectionController::class, 'show']);
+    Route::get('subsection/{id}', [SubSectionController::class, 'show']);
 
     // Grade
     Route::get('grade', [GradeController::class, 'index']);

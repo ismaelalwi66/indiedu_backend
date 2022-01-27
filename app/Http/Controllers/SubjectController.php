@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,9 +59,8 @@ class  SubjectController extends Controller
 
     public function show($id)
     {
-        $subject = Subject::findOrFail($id);
-        $section = Section::where('subject_id', $subject->id)->get();
-        $data = ['subject' => $subject, 'section' => $section];
+        $data = Subject::with('sections')->where('id',$id)->first();
+        $user = User::where('id', $data->teacher_id)->first();
             if ($data == null) {
                 return response()->json([
                     'message' => 'Gagal ditampilkan',
@@ -72,6 +72,7 @@ class  SubjectController extends Controller
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
                 'data' => $data,
+                'teacher_name' => $user->name,
             ], 200);
         }
     }
