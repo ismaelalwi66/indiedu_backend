@@ -11,7 +11,7 @@ use App\Http\Controllers\SubjectCategoryController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\SubSectionController;
-
+use App\Http\Controllers\TransactionController;
 
 
 /*
@@ -46,7 +46,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [NewPasswordController::class, 'forgotPassword'])->name('password.email');
     Route::post('/forgot-password/{id}', [NewPasswordController::class, 'verifOtp'])->name('password.verif');
     Route::post('/reset-password/{id}', [NewPasswordController::class, 'resetPassword'])->name('password.reset');
-    
+
     // Subject
     Route::get('/subject', [SubjectController::class, 'index']);
     Route::get('/subject/{id}', [SubjectController::class, 'show']);
@@ -95,6 +95,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('subsection', [SubSectionController::class, 'store']);
     Route::post('subsection/{id}', [SubSectionController::class, 'update']);
     Route::delete('subsection/{id}', [SubSectionController::class, 'destroy']);
-});
 
-Route::post('section/{slug}checkout', [TransactionController::class, 'store']);
+    // Transaction
+
+    Route::apiResource('transaction', TransactionController::class);
+});
