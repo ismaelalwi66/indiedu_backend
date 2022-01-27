@@ -11,7 +11,7 @@ class GradeController extends Controller
     public function index()
     {
         try {
-            $data = Grade::all();
+            $data = Grade::orderBy('name', 'asc')->get();
             return response()->json([
                 'message' => 'Berhasil ditampilkan',
                 'status' => '200',
@@ -27,14 +27,14 @@ class GradeController extends Controller
     public function store(Request $request)
     {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|min:1|max:20',
-                'type' => 'required|string|min:1|max:20',
+                'name' => 'required|integer|min:1|max:15',
+                'type' => 'required|string|min:1|max:5',
             ]);
             if($validator->fails()){
                 return response()->json([
                     'message'=>'Error! Mohon kolom diisi dengan benar',
                     'errors'=>$validator->errors()
-                ], 404);
+                ], 400);
             }else{
                 Grade::create([
                     'name' => $request->name,
@@ -50,7 +50,7 @@ class GradeController extends Controller
     public function show($id)
     {
         try {
-            $grade = Grade::find($id)->first();
+            $grade = Grade::where('id', $id)->first();
             return response()->json([
                 'message'=>'Berhasil didapatkan',
                 'data'=>$grade,
