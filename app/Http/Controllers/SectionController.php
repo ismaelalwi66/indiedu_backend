@@ -74,7 +74,7 @@ class SectionController extends Controller
         }
     }
 
-    /**
+    /** komen
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
