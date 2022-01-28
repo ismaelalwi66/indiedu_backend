@@ -57,6 +57,7 @@ class SectionController extends Controller
     public function show($id)
     {
         try {
+
             $section = Section::findOrFail($id);
             $subsection = SubSection::where('section_id', $section->id)->get();
             $data = ['section' => $section, 'subsection' => $subsection];
@@ -70,11 +71,11 @@ class SectionController extends Controller
                 'message' => 'error',
                 'status' => '404',
                 'error' => $e->getMessage()
-            ], 400);
+            ], 404);
         }
     }
 
-    /** komen
+    /** 
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
