@@ -94,7 +94,21 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $data = Transaction::find($id);
+        try {
+            $data = Transaction::findOrFail($id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'berhasil di tampilkan',
+                'data' => $data
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'gagal di tampilkan',
+                'error' => $e->getMessage()
+
+            ], 404);
+        }
     }
 
     public function destroy($id)

@@ -22,7 +22,7 @@ class SubSectionController extends Controller
                 'description' => $request->subsection_description,
                 'article' => $request->$file_name,
                 'article_url' => $request->$url_file,
-                'video' => $request->subsection_video,
+                'video' => $request->subsection_video_name,
                 'video_url' => $request->subsection_video_url,
                 'section_id' => $request->section_id,
             ]);
@@ -31,11 +31,11 @@ class SubSectionController extends Controller
                 'message' => 'Create Success',
                 'status' => '201',
             ], 201);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Create Failed',
                 'status' => '400',
-                'error' => $th,
+                'error' => $e->getMessage(),
             ], 400);
         }
     }
