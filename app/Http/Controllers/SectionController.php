@@ -34,7 +34,10 @@ class SectionController extends Controller
     public function show($id)
     {
         try {
-            $data = Section::with('subsections')->where('id', $id)->first();
+
+            $section = Section::findOrFail($id);
+            $subsection = SubSection::where('section_id', $section->id)->get();
+            $data = ['section' => $section, 'subsection' => $subsection];
             return response()->json([
                 'message' => 'success',
                 'status' => '200',
@@ -45,10 +48,17 @@ class SectionController extends Controller
                 'message' => 'error',
                 'status' => '404',
                 'error' => $e->getMessage()
-            ], 400);
+            ], 404);
         }
     }
 
+    /** 
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         try {
