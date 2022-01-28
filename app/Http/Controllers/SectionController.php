@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use App\Models\SubSection;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 
@@ -15,6 +16,7 @@ class SectionController extends Controller
             Section::create([
                 'title' => $request->title,
                 'description' => $request->description,
+                'slug' => Str::kebab($request->title),
                 'subject_id' => $request->subject_id,
             ]);
 
@@ -31,11 +33,10 @@ class SectionController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Section $section)
     {
         try {
 
-            $section = Section::findOrFail($id);
             $subsection = SubSection::where('section_id', $section->id)->get();
             $data = ['section' => $section, 'subsection' => $subsection];
             return response()->json([

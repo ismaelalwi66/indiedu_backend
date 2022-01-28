@@ -14,11 +14,11 @@ class Section extends Model
 
     public function subjects()
     {
-    return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Subject::class);
     }
 
     public function subsections()
     {
-    return $this->hasMany(SubSection::class);
+        return $this->hasMany(SubSection::class);
     }
 }

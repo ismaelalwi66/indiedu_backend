@@ -56,7 +56,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/category/{id}', [SubjectCategoryController::class, 'show']);
 
     // Section
-    Route::get('section/{id}', [SectionController::class, 'show']);
+    Route::get('section/{section:slug}', [SectionController::class, 'show']);
 
     // Subsection
     Route::get('subsection/{id}', [SubSectionController::class, 'show']);
